@@ -1,6 +1,10 @@
 
-/sample_text/
+sample_text
 
 .DS_Store
 .idea
 venv
+__pycache__/
+
+/dictionaries/
+/models/GoogleNews-vectors-negative300-SLIM.bin.gz
