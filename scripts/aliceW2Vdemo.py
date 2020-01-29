@@ -30,7 +30,7 @@ for i in sent_tokenize(f):
 
 # Create CBOW model
 model1 = Word2Vec(data, min_count=1, size=100, window=5)
-model1.save('../models/alice_CBOW.model')
+model1.save('/Users/arizaga/Documents/School/SeniorDesign/word2vecDemo/models/alice_CBOW.model')
 
 # Print results
 print("Cosine similarity between 'alice' " +
@@ -43,7 +43,7 @@ print("Cosine similarity between 'alice' " +
 
 # Create Skip Gram model
 model2 = Word2Vec(data, min_count=1, size=100, window=5, sg=1)
-model1.save('/Users/arizaga/Documents/School/SeniorDesign/word2vecDemo/models/alice_SG.model')
+model2.save('/Users/arizaga/Documents/School/SeniorDesign/word2vecDemo/models/alice_SG.model')
 
 # Print results
 print("Cosine similarity between 'alice' " +
