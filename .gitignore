@@ -1,0 +1,10 @@
+
+ignore
+
+
+.DS_Store
+.idea
+venv
+__pycache__/
+
+/dictionaries/
