@@ -16,6 +16,8 @@ def get_most_similar_words(phrase: str) -> Dict[str, float]:
     words = phrase.split(' ')
     all_similar = {}
     for word in words:
+        if word not in similarity_model.vocab:
+            continue
         all_similar[word] = 1.0
         similar = similarity_model.most_similar(word)
         for sim, percent in similar:
@@ -60,6 +62,10 @@ def deep_compare(base, comparer):
 
     total_sums = 0
     for b_word in base_words:
-        total_sums += max([similarity_model.similarity(b_word, c_word) for c_word in compared_words])
+        if b_word not in similarity_model.vocab:
+            continue
+
+        total_sums += max([similarity_model.similarity(b_word, c_word) if c_word in similarity_model.vocab else 0
+                           for c_word in compared_words])
 
     return total_sums / len(base_words)
