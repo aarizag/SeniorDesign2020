@@ -49,7 +49,7 @@ def shallow_compare(base: str, comparer: str) -> float:
     return sum([word_val(word, base_similar_set) for word in comp_words]) / len(comp_words)
 
 
-def deep_compare(base, comparer):
+def deep_compare(base: str, comparer: str) -> float:
     """
     Do a comparison by comparing each word in the base to every other word in the comparer sentence and taking an
         average of that total

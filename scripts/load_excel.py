@@ -1,4 +1,5 @@
-from typing import Optional
+from typing import Optional, Any, List, Dict
+
 import xlrd
 import random
 
@@ -26,11 +27,11 @@ class ExcelFile:
                 self.fields.append(sheet.cell_value(field_row, i))
             self.start_row = field_row + 1
 
-    def get_rand_cell(self, column):
+    def get_rand_cell(self, column) -> Any:
         row = self.get_row()
         return row[column]
 
-    def get_row(self, row_num=None):
+    def get_row(self, row_num: Optional[int] = None) -> Dict[str, Any]:
         if self.wb is None:
             self.set_workbook()
 
@@ -45,7 +46,7 @@ class ExcelFile:
 
         return row
 
-    def get_all_rows(self):
+    def get_all_rows(self) -> List[Dict[str, Any]]:
         if self.wb is None:
             self.set_workbook()
 
