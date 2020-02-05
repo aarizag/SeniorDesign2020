@@ -1,9 +1,15 @@
 from gensim.models import KeyedVectors
 
 from typing import Dict
+import time
 
 
-similarity_model = KeyedVectors.load_word2vec_format('/Users/arizaga/Documents/School/SeniorDesign/word2vecDemo/models/GoogleNews-vectors-negative300-SLIM.bin.gz', binary=True)
+FULL_GOOGLE = '/Users/arizaga/Documents/School/SeniorDesign/word2vecDemo/sample_text/GoogleNews-vectors-negative300.bin.gz'
+SLIM_GOOGLE = '/Users/arizaga/Documents/School/SeniorDesign/word2vecDemo/models/GoogleNews-vectors-negative300-SLIM.bin.gz'
+
+start = time.time()
+similarity_model = KeyedVectors.load_word2vec_format(SLIM_GOOGLE, binary=True)
+print(f'Model loaded in {time.time() - start}')
 
 
 def get_most_similar_words(phrase: str) -> Dict[str, float]:
