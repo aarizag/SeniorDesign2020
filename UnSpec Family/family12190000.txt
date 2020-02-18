@@ -1,0 +1,8 @@
+"hydrocarbonated solvents. . "
+"hydrocarbonated solvents. aromatic solvents. "
+"hydrocarbonated solvents. aliphatic solvents. "
+"hydrocarbonated solvents. phenols or its substitutes or derivatives. "
+"hydrocarbonated solvents. cyclic alkanes. "
+"oxygenated solvents. . "
+"oxygenated solvents. alcohol solvents. "
+"oxygenated solvents. active solvents. "
