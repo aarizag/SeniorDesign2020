@@ -7,7 +7,7 @@ cd path/to/your/project
 # IF YOU HAVENT CREATED A LOCAL REPOSITORY YET
 git init
 git remote add origin https://github.com/aarizag/SeniorDesign2020.git
-git pull origin master
+git fetch origin
 
 # create your own branch
 git branch your_name
