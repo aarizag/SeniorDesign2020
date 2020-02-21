@@ -81,14 +81,7 @@ for entry in dict_list:
         h = entry.get("Commodity Definition")
         i = entry.get("Family")
         j= entry.get("Commodity")
-        if(f != "" and h != ""):
-            result = e+". "+f+". "+g+". "+h+". "
-        elif(f != "" and h == ""):
-            result = e+". "+f+". "+g+". "+h
-        elif(f == "" and h != ""):
-            result = e+". "+f+" "+g+". "+h+". "
-        else:
-            result = e + ". " + f + "" + g + ". " + h
+        result = e + f + g + h
         sen = sent_tokenize(result.lower())
         listOfEntry.append(sen)
         sort.append(j)
