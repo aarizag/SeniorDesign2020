@@ -26,7 +26,7 @@ warnings.simplefilter('ignore')
 start=time.time()
 
 book = open_workbook('ignore/UNSPSC English v220601 project.xlsx')
-'''book = open_workbook('ignore/Unspec List2b.xlsx')'''
+#book = open_workbook('ignore/Unspec List2b.xlsx')
 '''To work on the UNSPSC sheet you need to change the values of 0 to 12 and 1 to
 16 in order to make the it work.'''
 dict_list = []
