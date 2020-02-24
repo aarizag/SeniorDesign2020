@@ -49,10 +49,14 @@ counter = 1
 num=1
 
 path = "UnSpec Family"
-
 if not os.path.exists(path):
     os.makedirs(path)
-
+path1 = "Corpus"
+if not os.path.exists(path1):
+    os.makedirs(path1)
+path2 = "Dictionary"
+if not os.path.exists(path2):
+    os.makedirs(path2)
 
 
 for entry in dict_list:
@@ -76,12 +80,12 @@ for entry in dict_list:
         
     else:
         e = entry.get("Class Title")
-        f = entry.get("Class Definition")
+        #f = entry.get("Class Definition")
         g = entry.get("Commodity Title")
-        h = entry.get("Commodity Definition")
+        #h = entry.get("Commodity Definition")
         i = entry.get("Family")
         j= entry.get("Commodity")
-        result = e + f + g + h
+        result = e +" " + g
         sen = sent_tokenize(result.lower())
         listOfEntry.append(sen)
         sort.append(j)
@@ -131,7 +135,7 @@ Corlist=[]
 Dictlist=[]
 lengths=[]
 inc = 1
-ch = [ '``','``', "''",',','.','\\n',"'",";",":","(",")","-","--"]
+ch = [ '``','``', "''",',','.','\\n',"'",";",":","(",")","-","--","\""]
 for input in alist:
     for j in input:
         tokens = word_tokenize(j)
@@ -139,8 +143,8 @@ for input in alist:
         tokens = [w for w in tokens if not w in stop_words]
         tokens = [p.replace('.',"") for p in tokens]
         token.append(tokens)
-    out_fname = get_tmpfile("corpus{0}".format(inc))
-    tmp_fname = get_tmpfile("dictionary{0}".format(inc))
+    out_fname = "../Python/Corpus/corpus{0}".format(inc)
+    tmp_fname = "../Python/Dictionary/dictionary{0}".format(inc)
     lengths.append(len(token))
     inc += 1
     dictionary = corpora.Dictionary(token)
