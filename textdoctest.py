@@ -2,10 +2,12 @@ import os
 import xlsxwriter
 from xlrd import open_workbook
 from gensim.models import LsiModel
+from gensim.models import TfidfModel
 from gensim import similarities,models
 import gensim
 from gensim.corpora import MmCorpus
 import warnings
+from nltk.corpus import stopwords
 import time
 import nltk
 import pandas as pd
@@ -17,11 +19,11 @@ warnings.simplefilter('ignore')
 
 import MakerOfFiles as mf
 
-book = open_workbook('ignore/eCAPS_COMM_11072019.xlsx')
-#book = open_workbook('ignore/County_List.xlsx')
+#book = open_workbook('ignore/eCAPS_COMM_11072019.xlsx')
+book = open_workbook('ignore/County_List.xlsx')
 county_list = []
 #for testing you need 0. real you will need 1
-sheet = book.sheet_by_index(1)
+sheet = book.sheet_by_index(0)
 # read header values into the list
 keys = [sheet.cell(0, col_index).value for col_index in range(sheet.ncols)]
 
@@ -31,42 +33,50 @@ for row_index in range(1, sheet.nrows):
     #Uncomment these for real use
     county_list.append(d)
 
+stop_words = set(stopwords.words('english'))
 
-
-def reduceList2(lengths,sortlist, dictionarys,corpuses,county):
+def reduceList2(alist,sortlist,county):
+    token =[]
+    lengths=[]
     listNew = []
+    intca = 0
+    ch = [ '``','``', "''",',','.','\\n',"'",";",":","(",")","-","--","\""]
     query_doc= word_tokenize(county.lower())
-    mm = MmCorpus(corpuses)
-    tf_idf = models.TfidfModel(mm)
-    cortfidf = tf_idf[mm]
-    load_dic = corpora.Dictionary.load_from_text(dictionarys)
-    lsi = LsiModel(mm,num_topics=lengths,id2word = load_dic,chunksize=1000)
-    index = gensim.similarities.MatrixSimilarity(lsi[mm],num_features=lengths)
-    query_doc_bow = load_dic.doc2bow(query_doc, True)
-    query_doc_tf_idf = tf_idf[query_doc_bow]
-    sim = list(zip(sortlist,index[lsi[query_doc_tf_idf]]))
-    sim.sort(key = operator.itemgetter(1),reverse = True)
-    for a in sim:
-        if(a[0]==''):
-            continue
-        elif(a[1]>0.1):
-            listNew.append(a)
+    for input in alist:
+        for j in input:
+            tokens = word_tokenize(j)
+            tokens = [ j for j in tokens if not j in ch ]
+            tokens = [w for w in tokens if not w in stop_words]
+            tokens = [p.replace('.',"") for p in tokens]
+            token.append(tokens)
+        dictionary = corpora.Dictionary(token)
+        corpus = [dictionary.doc2bow(entry) for entry in token]
+        tf_idf = TfidfModel(corpus)
+        anotherSim = gensim.similarities.Similarity('dir',tf_idf[corpus],num_features=len(dictionary))
+        query_doc_bow = dictionary.doc2bow(query_doc, True)
+        query_doc_tf_idf = tf_idf[query_doc_bow]
+        sim = list(zip(sortlist[intca],anotherSim[query_doc_tf_idf]))
+        intca+=1
+        sim.sort(key = operator.itemgetter(1),reverse = True)
+        for a in sim:
+            if(a[0]==''):
+                continue
+            elif(a[1]>0.1):
+                listNew.append(a)
                 
-    #excelSheet = workbook.add_worksheet(str(sheet))
-    cot = 1
-    for piece in listNew:
-        excelSheet.write(cot,0,piece[0])
-        excelSheet.write(cot,1,piece[1])
-        cot+=1
+        cot = 1
+        for piece in listNew:
+            excelSheet.write(cot,0,piece[0])
+            excelSheet.write(cot,1,piece[1])
+            cot+=1
 
 
 start2=time.time()
-workbook   = xlsxwriter.Workbook('../Python/ignore/Result.xlsx')
+workbook   = xlsxwriter.Workbook('../Python/ignore/Result3.xlsx')
 
 for w in county_list:
     excelSheet = workbook.add_worksheet(str(w.get('COMM_CLS')))
-    for i in range(len(mf.lengths)):
-        reduceList2(mf.lengths[i],mf.sortlist[i],mf.Dictlist[i],mf.Corlist[i],str(w.get('KEYWD')))
+    reduceList2(mf.alist,mf.sortlist,str(w.get('KEYWD')))
         #print(i)
     
 workbook.close()       
