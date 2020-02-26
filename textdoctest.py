@@ -1,7 +1,6 @@
 import os
 import xlsxwriter
 from xlrd import open_workbook
-<<<<<<< HEAD
 from gensim.models import LsiModel
 from gensim.models import TfidfModel
 from gensim import similarities,models
@@ -171,5 +170,4 @@ data.to_excel(exceltest,sheet_name='MASS TRANSPORTATION')
 exceltest.save()
 
 """
-=======
->>>>>>> c10bf395d05e2354316e31175d469c4b762f2481
+

@@ -5,21 +5,40 @@ import gensim
 from xlrd import open_workbook
 from nltk.corpus import stopwords
 import operator
+import time
+import xlsxwriter
+start2=time.time()
 
-book = open_workbook('UNSPSC English v220601 project.xlsx')
-'''book = open_workbook('Unspec List.xlsx')'''
+book = open_workbook('../ignore/UNSPSC English v220601 project.xlsx')
+#book = open_workbook('../ignore/Unspec List2b.xlsx')
 '''To work on the UNSPSC sheet you need to change the values of 0 to 12 and 1 to
 16 in order to make the it work.'''
 dict_list = []
 sheet = book.sheet_by_index(0)
 # read header values into the list
-keys = [sheet.cell(12, col_index).value for col_index in range(sheet.ncols)]
+keys = [sheet.cell(0, col_index).value for col_index in range(sheet.ncols)]
 
-for row_index in range(13, sheet.nrows):
+for row_index in range(1, sheet.nrows):
     d = {keys[col_index]: sheet.cell(row_index, col_index).value
          for col_index in range(sheet.ncols)}
     dict_list.append(d)
 
+
+book = open_workbook('../ignore/eCAPS_COMM_11072019.xlsx')
+#book = open_workbook('../ignore/County_List.xlsx')
+county_list = []
+#for testing you need 0. real you will need 1
+sheet = book.sheet_by_index(1)
+# read header values into the list
+keys = [sheet.cell(0, col_index).value for col_index in range(sheet.ncols)]
+
+for row_index in range(1, sheet.nrows):
+    d = {keys[col_index]: sheet.cell(row_index, col_index).value
+         for col_index in range(sheet.ncols)}
+    #Uncomment these for real use
+    county_list.append(d)
+    
+print(f'Reading excel files done in: {time.time() - start2}')
 listOfEntry = []
 tokenSen = []
 sen = []
@@ -32,31 +51,27 @@ for entry in dict_list:
     g = entry.get("Commodity Title")
     h = entry.get("Commodity Definition")
     i = entry.get("Commodity")
-    if(f != "" and h != ""):
-        result = e+". "+f+". "+g+". "+h+". "
-    elif(f != "" and h == ""):
-        result = e+". "+f+". "+g+". "+h
-    elif(f == "" and h != ""):
-        result = e+". "+f+" "+g+". "+h+". "
-    else:
-        result = e + ". " + f + "" + g + ". " + h
+    result = str(e) + ". " + str(f) + " " + str(g) + ". " + str(h)
     sen = sent_tokenize(result.lower())
     listOfEntry.append(sen)
     keyvaluePair.append(i)
     e, f, g, h = "", "", "", ""
 
 
-
+print(f'Taking family and under in {time.time() - start2}')
 stop_words = set(stopwords.words('english'))
 file_docs = []
 
 
 for input in listOfEntry:
     for j in input:
-        tokens = word_tokenize(j)
-        tokens = [w for w in tokens if not w in stop_words]
+        token = sent_tokenize(j)
+        for a in token:
+            tokens = word_tokenize(a)
+            tokens = [w for w in tokens if not w in stop_words]
     file_docs.append(tokens)
 
+print(f'Tokenize done in {time.time() - start2}')
 print("Number of documents:", len(file_docs))
 
 """
@@ -67,6 +82,7 @@ To get the total amount of corpus positions which is the number
 of processed words.
 """
 dictionary = gensim.corpora.Dictionary(file_docs)
+print(f'Dictionary done in {time.time() - start2}')
 """
 In the coming function call we will be converting a document to a beg of words
 the tuple created is the token Id of the word and the token count for that word
@@ -82,26 +98,35 @@ tf_idf = gensim.models.TfidfModel(corpus)
 
 sims = gensim.similarities.Similarity('dir', tf_idf[corpus], num_features=len(dictionary))
 
+print(f'Done with building Similarity in {time.time() - start2}')
 
-test = "MASS TRANSPORTATION - RAIL VEHICLE PARTS AND ACCESSORIES"
-test = test.lower()
+def NarrowingDown(sheet,county):
+    query_doc = word_tokenize(county.lower())
+    query_doc_bow = dictionary.doc2bow(query_doc, True)
+    query_doc_tf_idf = tf_idf[query_doc_bow]
+    listnew =[]
+    listnew = list(zip(keyvaluePair,sims[query_doc_tf_idf]))
+    listNew=[]
+    for a in listnew:
+        if(a[0]==''):
+            continue
+        elif(a[1]>0.05):
+            listNew.append(a)
+    excelSheet=workbook.add_worksheet(str(sheet))
+    cot = 1
+    for piece in listNew:
+        excelSheet.write(cot,0,piece[0])
+        excelSheet.write(cot,1,piece[1])
+        cot+=1
+    print(f'Done zipping and now filtering  {time.time() - start2}')
 
-query_doc = word_tokenize(test)
-print(query_doc)
-query_doc_bow = dictionary.doc2bow(query_doc, True)
-print(query_doc_bow)
 
-query_doc_tf_idf = tf_idf[query_doc_bow]
+workbook = xlsxwriter.Workbook('../NewProject/Result6.xlsx')
+for w in county_list:
+    NarrowingDown(int(w.get('COMM_CLS')),str(w.get('KEYWD')))
+workbook.close()       
+print(f'Narrowing done in {time.time() - start2}')
 
-
-
-listnew =[]
-listnew = list(zip(keyvaluePair,sims[query_doc_tf_idf]))
-
-listnew.sort(key = operator.itemgetter(1),reverse = True)
-
-for i in range(5):
-    print(listnew[i])
 
 
 """ a = entry.get("Segment Title")
