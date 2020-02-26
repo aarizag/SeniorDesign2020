@@ -1,0 +1,9 @@
+/venv/
+/sample_text/
+/models/
+/dictionaries/
+
+.idea
+.DS_Store
+
+scripts/__pycache__

@@ -34,97 +34,18 @@ def workbookStuff():
 		rows = sheet.nrows
 		cols = sheet.ncols
 
-		#writing titles
-		for i in range(cols - 2):
-			worksheet.write(0,i ,sheet.cell_value(12,i), bold)
+		for i in range(cols):
+			worksheet.write(0, i, sheet.cell_value(0, i))
 
-		#keys
-		for j in range(rows):
-			if sheet.cell_value(j,1) == 'Key':
-				continue
-			else:
-				worksheet.write(j,1, sheet.cell_value(j,1))
-
-		for i in range(rows):
-			if sheet.cell_value(i,2) == 'Segment':
-				continue
-			else:
-				worksheet.write(i,2, sheet.cell_value(i,2))
-
-		
-		for i in range(rows):
-			if sheet.cell_value(i,3) == 'Segment Title':
-				continue
-			else:
-				if i < 5:
-					continue
-				else:
-					worksheet.write(i,3, remove(sheet.cell_value(i,3)))
-
-		for i in range(rows):
-			if sheet.cell_value(i,4) == 'Segment Definition':
-				continue
-			else:
-				worksheet.write(i,4, remove(sheet.cell_value(i,4)))
-
-		for i in range(rows):
-			if sheet.cell_value(i,5) == 'Family':
-				continue
-			else:
-				worksheet.write(i,5, sheet.cell_value(i,5))
-
-		for i in range(rows):
-			if sheet.cell_value(i,6) == 'Family Title':
-				continue
-			else:
-				worksheet.write(i,6, remove(sheet.cell_value(i,6)))
-
-		for i in range(rows):
-			if sheet.cell_value(i,7) == 'Family Definition':
-				continue
-			else:
-				worksheet.write(i,7, remove(sheet.cell_value(i,7)))
-
-		for i in range(rows):
-			if sheet.cell_value(i,8) == 'Class':
-				continue
-			else:
-				worksheet.write(i,8, sheet.cell_value(i,8))
-
-		for i in range(rows):
-			if sheet.cell_value(i,9) == 'Class Title':
-				continue
-			else:
-				worksheet.write(i,9, remove(sheet.cell_value(i,9)))
-
-		for i in range(rows):
-			if sheet.cell_value(i,10) == 'Class Definition':
-				continue
-			else:
-				worksheet.write(i,10, remove(sheet.cell_value(i,10)))
-
-		for i in range(rows):
-			if sheet.cell_value(i,11) == 'Commodity':
-				continue
-			else:
-				worksheet.write(i,11, sheet.cell_value(i,11))
-		for i in range(rows):
-			if sheet.cell_value(i,12) == 'Commodity Title':
-				continue
-			else:
-				worksheet.write(i,12, remove(sheet.cell_value(i,12)))
-
-		for i in range(rows):
-			if sheet.cell_value(i,13) == 'Commodity Definition':
-				continue
-			else:
-				worksheet.write(i,13, remove(sheet.cell_value(i,13)))
-		workbook.close()
-		print("Done.")
-
+		for row in range(1, rows):
+			for col in range(cols):
+				worksheet.write(row, col, remove(sheet.cell_value(row, col)))
 
 
 def remove(sent):
+	if type(sent) == float or type(set) == int:
+		return sent
+
 	word = ""
 	phrase = sent
 
