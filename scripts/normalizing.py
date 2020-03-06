@@ -2,6 +2,8 @@ import nltk
 import xlrd
 import xlsxwriter
 import os.path
+import progressbar
+import time
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -22,7 +24,7 @@ def workbookStuff():
 		print("Workbook created under NormalizedUNSPSC.xlsx")
 
 		print("Opening UNSPSC...")
-		loc = "C:your/path/here/UNSPSC English v220601 project/UNSPSC English v220601 project.xlsx"
+		loc = "C:/your/path/here/UNSPSC English v220601 project.xlsx"
 		wb = xlrd.open_workbook(loc)
 		sheet = wb.sheet_by_index(0)
 		print("Opened.")
@@ -37,12 +39,22 @@ def workbookStuff():
 		for i in range(cols):
 			worksheet.write(0, i, sheet.cell_value(0, i))
 
+		bar = progressbar.ProgressBar(maxval=rows, \
+	    widgets=[progressbar.Bar('=', '[', ']'), ' ', progressbar.Percentage()])
+		bar.start()
+
 		for row in range(1, rows):
-			for col in range(cols):
-				if type(sheet.cell_value(row, col)) == float:
-					worksheet.write(row, col, remove(sheet.cell_value(row, col)))
+			for col in range(1, cols - 2):
+				if row < 5:
+					continue
 				else:
-					worksheet.write(row, col, remove(sheet.cell_value(row, col)).upper())
+					bar.update(row+1)
+					if type(sheet.cell_value(row, col)) == float:
+						worksheet.write(row, col, remove(sheet.cell_value(row, col)))
+					else:
+						worksheet.write(row, col, remove(sheet.cell_value(row, col)).upper())
+		bar.finish()
+		workbook.close()
 
 
 def remove(sent):
