@@ -22,7 +22,7 @@ def workbookStuff():
 		print("Workbook created under NormalizedUNSPSC.xlsx")
 
 		print("Opening UNSPSC...")
-		loc = "C:/Users/Jordi/Desktop/Senior Design/UNSPSC English v220601 project/UNSPSC English v220601 project.xlsx"
+		loc = "C:your/path/here/UNSPSC English v220601 project/UNSPSC English v220601 project.xlsx"
 		wb = xlrd.open_workbook(loc)
 		sheet = wb.sheet_by_index(0)
 		print("Opened.")
@@ -39,7 +39,10 @@ def workbookStuff():
 
 		for row in range(1, rows):
 			for col in range(cols):
-				worksheet.write(row, col, remove(sheet.cell_value(row, col)))
+				if type(sheet.cell_value(row, col)) == float:
+					worksheet.write(row, col, remove(sheet.cell_value(row, col)))
+				else:
+					worksheet.write(row, col, remove(sheet.cell_value(row, col)).upper())
 
 
 def remove(sent):
