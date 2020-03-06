@@ -111,13 +111,17 @@ def NarrowingDown(sheet,county):
         if(a[0]==''):
             continue
         elif(a[1]>0.05):
-            listNew.append(a)
+            listNew.append(a[0])
     excelSheet=workbook.add_worksheet(str(sheet))
     cot = 1
-    for piece in listNew:
-        excelSheet.write(cot,0,piece[0])
-        excelSheet.write(cot,1,piece[1])
-        cot+=1
+    counter = 0
+    for entry in dict_list:
+        if(counter < len(listNew)):
+            if(entry.get("Commodity")==listNew[counter]):
+                excelSheet.write(cot,0,entry.get("Commodity Title"))
+                cot += 1
+                counter += 1
+    
     print(f'Done zipping and now filtering  {time.time() - start2}')
 
 
