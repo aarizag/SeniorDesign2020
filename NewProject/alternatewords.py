@@ -19,13 +19,6 @@ def listToAscendingOrder(newList2):
         counter += 1
         index_OfGreatest = 0
 
-sentence_1_normalized = 'school supply set kit' 
-sentence_2_normalized = 'school equipment supply'
-from nltk.tokenize import word_tokenize as tokenize_sentence
-sentence_1_tokenized = tokenize_sentence(sentence_1_normalized)
-sentence_2_tokenized = tokenize_sentence(sentence_2_normalized)
-
-
 
 ## Euclidean Distance
 #  - distance between two vectors
@@ -40,6 +33,8 @@ def euclidean_distance(u, v):
     return euclidean_distance
 # Example       
 print(euclidean_distance([1,2,3], [4,5,6]))
+
+
 ## Load Google's Pre-Trained Dataset
 ##
 import wordNet
@@ -54,6 +49,50 @@ file_directory = '../ignore/GoogleNews-vectors-negative300.bin.gz'
 model = KeyedVectors.load_word2vec_format(file_directory, binary=True)
 
 print("## Done loading Google's Pre-Trained Word2Vec model")
+
+
+sentence_1_normalized = 'school supply set kit' 
+sentence_2_normalized = 'school equipment supply'
+from nltk.tokenize import word_tokenize as tokenize_sentence
+sentence_1_tokenized = tokenize_sentence(sentence_1_normalized)
+sentence_2_tokenized = tokenize_sentence(sentence_2_normalized)
+
+
+## Word embedding
+##
+# Using Google's pre-train dataset, convert every word in the tokenized sentence into its 
+# position coordinates in a 300 dimension vector space
+def word_embedding(tokenized_sentence):
+    list_wordembedding = []
+    for token in tokenized_sentence:
+        list_wordembedding.append(model[token]) 
+    return list_wordembedding
+        
+# word_embedding() takes in a tokenized sentence 
+# this function will return a list of list containing
+# the vector position of every word in a sentece
+
+
+
+#parameter = two normalized sentences
+def list_vectorPosition(tokenized_sentence1, tokenized_sentence2):
+    # list at index 0 = sentence 1
+    # list at index 1 = sentence 2
+    list1 = []
+    # the vector position of every word in a sentece
+    sentence1_vector_position = word_embedding(tokenized_sentence1) # vector position for every word in sentence 1
+    sentence2_vector_position = word_embedding(tokenized_sentence2) # vector position for every word in sentence 1
+    list1.append(sentence1_vector_position)
+    list1.append(sentence2_vector_position)
+    return list1
+
+#list_vectorPosition returns a (list) containing a (list) of (list with 300 values).
+#list_vectorPosition[0] vector positions for sentence 1
+#list_vectorPosition[1] vector positions for sentence 2
+#list_vectorPosition[0][i] returns a list with vector position (300 entries) of word at i
+
+list1 = list_vectorPosition(sentence_1_tokenized, sentence_2_tokenized)
+
 
 def compare(tokenized_sentence1, tokenized_sentence2, list_of_vector_position):
     # index 0 = sentence 1
@@ -90,6 +129,7 @@ def compare(tokenized_sentence1, tokenized_sentence2, list_of_vector_position):
     
 print("Done!")
 
+
 results = compare(sentence_1_tokenized, sentence_2_tokenized, list1)
 
 def removeDistanceScore(list_results):
@@ -113,38 +153,6 @@ def compareResults(sentence_1_normalized, sentence_2_normailzed):
     
     return results__final_NoScore
 
-## Word embedding
-##
-# Using Google's pre-train dataset, convert every word in the tokenized sentence into its 
-# position coordinates in a 300 dimension vector space
-def word_embedding(tokenized_sentence):
-    list_wordembedding = []
-    for token in tokenized_sentence:
-        list_wordembedding.append(model[token]) 
-    return list_wordembedding
-        
-# word_embedding() takes in a tokenized sentence 
-# this function will return a list of list containing
-# the vector position of every word in a sentece
-
-#parameter = two normalized sentences
-def list_vectorPosition(tokenized_sentence1, tokenized_sentence2):
-    # list at index 0 = sentence 1
-    # list at index 1 = sentence 2
-    list1 = []
-    # the vector position of every word in a sentece
-    sentence1_vector_position = word_embedding(tokenized_sentence1) # vector position for every word in sentence 1
-    sentence2_vector_position = word_embedding(tokenized_sentence2) # vector position for every word in sentence 1
-    list1.append(sentence1_vector_position)
-    list1.append(sentence2_vector_position)
-    return list1
-
-#list_vectorPosition returns a (list) containing a (list) of (list with 300 values).
-#list_vectorPosition[0] vector positions for sentence 1
-#list_vectorPosition[1] vector positions for sentence 2
-#list_vectorPosition[0][i] returns a list with vector position (300 entries) of word at i
-
-list1 = list_vectorPosition(sentence_1_tokenized, sentence_2_tokenized)
 
 
 # load our UNSPSC from our manual comparisons
@@ -152,11 +160,11 @@ import pandas as pd
 
 unspsc_column = 1
 
-unspsc = pd.read_excel('Result6.xlsx',sheet_name='559').iloc[:,0]
+unspsc = pd.read_excel('Result6.xlsx',sheet_name='785').iloc[:,0]
 ecomm = pd.read_excel('../ignore/eCAPS_COMM_11072019.xlsx',sheet_name='COMM_ITM').iloc[:,5]
 
 
-eCOMM_Line = ecomm.iloc[2351].lower()
+eCOMM_Line = ecomm.iloc[6057].lower()
 print(eCOMM_Line)
 print("----------------------------------------------------")
 def percentage_similarity(eCOMM_line_, unspsc_):
@@ -173,7 +181,7 @@ listToAscendingOrder(sim_percentage1)
 
 printList(sim_percentage1)
 
-eCOMM_Line1 = ecomm.iloc[2354].lower()
+eCOMM_Line1 = ecomm.iloc[6056].lower()
 print(eCOMM_Line1)
 print("--------------------------------------------")
 sim_percentage2 = percentage_similarity(eCOMM_Line1, unspsc)
