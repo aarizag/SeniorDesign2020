@@ -46,12 +46,12 @@ keyvaluePair = []
 counter = 0
 
 for entry in dict_list:
+    a = entry.get("Segment Title")
+    c = entry.get("Family Title")
     e = entry.get("Class Title")
-    f = entry.get("Class Definition")
     g = entry.get("Commodity Title")
-    h = entry.get("Commodity Definition")
     i = entry.get("Commodity")
-    result = str(e) + ". " + str(f) + " " + str(g) + ". " + str(h)
+    result = str(a) + " " + str(c)+" "+str(e) + " " + str(g)
     sen = sent_tokenize(result.lower())
     listOfEntry.append(sen)
     keyvaluePair.append(i)
@@ -110,22 +110,23 @@ def NarrowingDown(sheet,county):
     for a in listnew:
         if(a[0]==''):
             continue
-        elif(a[1]>0.05):
-            listNew.append(a[0])
+        elif(a[1]>0.1):
+            listNew.append(a)
     excelSheet=workbook.add_worksheet(str(sheet))
     cot = 1
     counter = 0
     for entry in dict_list:
         if(counter < len(listNew)):
-            if(entry.get("Commodity")==listNew[counter]):
+            if(entry.get("Commodity")==listNew[counter][0]):
                 excelSheet.write(cot,0,entry.get("Commodity Title"))
+                excelSheet.write(cot,1,listNew[counter][1])
                 cot += 1
                 counter += 1
     
     print(f'Done zipping and now filtering  {time.time() - start2}')
 
 
-workbook = xlsxwriter.Workbook('../NewProject/Result6.xlsx')
+workbook = xlsxwriter.Workbook('../NewProject/Result3.xlsx')
 for w in county_list:
     NarrowingDown(int(w.get('COMM_CLS')),str(w.get('KEYWD')))
 workbook.close()       

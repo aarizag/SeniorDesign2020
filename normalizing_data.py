@@ -6,27 +6,38 @@
 #### reading data using pandas, converting data into array and lowercaseing data ####
 
 import pandas as pd
-# -------------------------------------------
-## enter directory of new excel file --------
-data = pd.read_excel("./County_List.xlsx")
-
-# Create an Array from the spreadsheet
-# use this array as main to manipulate data
-new_array = []
-
-for i in range(len(data)):
-    # get data at column 2 row i
-    # convert to Lower case
-    
-    # -----------------------------------------------------------------
-    # ------- insert index of column here, replace 2 with new index ---
-    new_array.append(data.iloc[:,2].iloc[i].lower())
-
-#- Testing new array
-#print(new_array[0].split())
+from nltk.tokenize import word_tokenize, sent_tokenize
+from xlrd import open_workbook
+import gensim
+import numpy as np
 
 
-# -- remove punctuation ---------------
+book = open_workbook('./ignore/UNSPSC English v220601 project.xlsx')
+dict_list = []
+sheet = book.sheet_by_index(0)
+# read header values into the list
+keys = [sheet.cell(0, col_index).value for col_index in range(sheet.ncols)]
+
+for row_index in range(1, sheet.nrows):
+    d = {keys[col_index]: sheet.cell(row_index, col_index).value
+         for col_index in range(sheet.ncols)}
+    dict_list.append(d)
+listOfEntry = []
+
+for entry in dict_list:
+    a = entry.get("Segment Title")
+    c = entry.get("Family Title")
+    e = entry.get("Class Title")
+    g = entry.get("Commodity Title")
+    i = entry.get("Commodity")
+    result = str(a) + " " + str(c)+" "+str(e) + " " + str(g)
+    sen = sent_tokenize(result.lower())
+    listOfEntry.append(sen)
+    e, f, g, h = "", "", "", ""
+
+
+print(len(listOfEntry))
+
 import re
 def punctuation_remove(tokenized_words):
     #tokeinzed means converting a sentence into an array of words.
@@ -71,55 +82,27 @@ def lematization(tokenized_words):
         lemmas.append(lemma)
     return lemmas
 
-
-# convert all data to lowercase 
-# remove all punctuation
-# remove stop words
-# use lexicon normalization (Lemmatization) to change any verb into its normalized form
-
-# Example: remove punctuation
-print(punctuation_remove("The sa/!@#$%^&*m.e i's not".split()))
-
-# Example: remove stopwords
-print(stopwords_remove("This is not multiplying".split()))
-
-# Example: lematization (change any verb into its normalized form)
-print(lematization("adding multiplying".split()))
-
 # final Part: normalizing_data
 def normalizing_data(tokenized_words):
     normalized = lematization(stopwords_remove(punctuation_remove(tokenized_words)))
     return normalized
+file_docs=[]
+for input in listOfEntry:
+    for j in input:
+        token = sent_tokenize(j)
+        for a in token:
+            tokens = word_tokenize(a)
+            tokens = normalizing_data(tokens)
+    #print(tokens)
+    file_docs.append(tokens)
 
-# printing test run
-#print(normalizing_data("This is not multiplying".split()))
+print(len(file_docs))
 
-
-from nltk.tokenize import word_tokenize
-# example of word being normilazed
-print("\n\n\nNormalizing data Example")
-print("---------------------------------------------------------------")
-print(word_tokenize(new_array[0]))
-print(normalizing_data(word_tokenize(new_array[0])))
-print("---------------------------------------------------------------")
-
-
-#### Normalizing all data in new_array ####
-#------------------------------------------
-
-# array with normalized data
-array_NormalizedData = []
-
-for i in range(len(new_array)):
-    tokenized = word_tokenize(new_array[i])
-    array_NormalizedData.append(normalizing_data(tokenized))
-    
+dictionary = gensim.corpora.Dictionary(file_docs)
+corpus = [dictionary.doc2bow(entry, allow_update=True) for entry in file_docs]
+tf_idf = gensim.models.TfidfModel(corpus,dictionary)
+for doc in tf_idf[corpus]:
+    print([[dictionary[id], freq] for id, freq in doc])
 
 
 
-# Print data in newline (better to visualized)
-print("\nArray with normalized data")
-print("---------------------------------------------------------------")
-for i in range(len(array_NormalizedData)):
-    print(array_NormalizedData[i])
-print("---------------------------------------------------------------")
