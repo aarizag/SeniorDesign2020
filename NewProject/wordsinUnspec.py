@@ -9,7 +9,7 @@ import time
 import xlsxwriter
 start2=time.time()
 
-book = open_workbook('../ignore/UNSPSC English v220601 project.xlsx')
+book = open_workbook('../NewProject/NormalizedUNSPSC.xlsx')
 #book = open_workbook('../ignore/Unspec List2b.xlsx')
 '''To work on the UNSPSC sheet you need to change the values of 0 to 12 and 1 to
 16 in order to make the it work.'''
@@ -49,9 +49,17 @@ for entry in dict_list:
     a = entry.get("Segment Title")
     c = entry.get("Family Title")
     e = entry.get("Class Title")
+<<<<<<< HEAD
     g = entry.get("Commodity Title")
     i = entry.get("Commodity")
     result = str(a) + " " + str(c)+" "+str(e) + " " + str(g)
+=======
+    #f = entry.get("Class Definition")
+    g = entry.get("Commodity Title")
+    #h = entry.get("Commodity Definition")
+    i = entry.get("Commodity")
+    result = str(e) + ". " + " " + str(g) + ". "
+>>>>>>> d4b4d68685b042122fd298f8f7f71578c319a73b
     sen = sent_tokenize(result.lower())
     listOfEntry.append(sen)
     keyvaluePair.append(i)
