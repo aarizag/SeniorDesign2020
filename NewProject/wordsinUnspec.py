@@ -47,19 +47,15 @@ counter = 0
 
 for entry in dict_list:
     a = entry.get("Segment Title")
+    b = entry.get("Segment Definition")
     c = entry.get("Family Title")
+    d =entry.get("Family Definition")
     e = entry.get("Class Title")
-<<<<<<< HEAD
+    f = entry.get("Class Definition")
     g = entry.get("Commodity Title")
+    h = entry.get("Commodity Definition")
     i = entry.get("Commodity")
-    result = str(a) + " " + str(c)+" "+str(e) + " " + str(g)
-=======
-    #f = entry.get("Class Definition")
-    g = entry.get("Commodity Title")
-    #h = entry.get("Commodity Definition")
-    i = entry.get("Commodity")
-    result = str(e) + ". " + " " + str(g) + ". "
->>>>>>> d4b4d68685b042122fd298f8f7f71578c319a73b
+    result = str(a)+" "+str(b)+" "+str(c)+" "+str(d)+str(e)+" " + str(f) + " " + str(g)+" "+str(h)
     sen = sent_tokenize(result.lower())
     listOfEntry.append(sen)
     keyvaluePair.append(i)
@@ -67,16 +63,15 @@ for entry in dict_list:
 
 
 print(f'Taking family and under in {time.time() - start2}')
-stop_words = set(stopwords.words('english'))
-file_docs = []
 
+file_docs = []
+tokens=[]
 
 for input in listOfEntry:
     for j in input:
         token = sent_tokenize(j)
         for a in token:
             tokens = word_tokenize(a)
-            tokens = [w for w in tokens if not w in stop_words]
     file_docs.append(tokens)
 
 print(f'Tokenize done in {time.time() - start2}')
@@ -90,6 +85,8 @@ To get the total amount of corpus positions which is the number
 of processed words.
 """
 dictionary = gensim.corpora.Dictionary(file_docs)
+print(len(dictionary))
+
 print(f'Dictionary done in {time.time() - start2}')
 """
 In the coming function call we will be converting a document to a beg of words
@@ -118,23 +115,22 @@ def NarrowingDown(sheet,county):
     for a in listnew:
         if(a[0]==''):
             continue
-        elif(a[1]>0.1):
-            listNew.append(a)
+        elif(a[1]>0.05):
+            listNew.append(a[0])
     excelSheet=workbook.add_worksheet(str(sheet))
     cot = 1
     counter = 0
     for entry in dict_list:
         if(counter < len(listNew)):
-            if(entry.get("Commodity")==listNew[counter][0]):
+            if(entry.get("Commodity")==listNew[counter]):
                 excelSheet.write(cot,0,entry.get("Commodity Title"))
-                excelSheet.write(cot,1,listNew[counter][1])
                 cot += 1
                 counter += 1
     
     print(f'Done zipping and now filtering  {time.time() - start2}')
 
 
-workbook = xlsxwriter.Workbook('../NewProject/Result3.xlsx')
+workbook = xlsxwriter.Workbook('../NewProject/Result6.xlsx')
 for w in county_list:
     NarrowingDown(int(w.get('COMM_CLS')),str(w.get('KEYWD')))
 workbook.close()       
