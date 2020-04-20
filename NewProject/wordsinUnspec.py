@@ -130,7 +130,7 @@ def NarrowingDown(sheet,county):
     print(f'Done zipping and now filtering  {time.time() - start2}')
 
 
-workbook = xlsxwriter.Workbook('../NewProject/Result6.xlsx')
+workbook = xlsxwriter.Workbook('../ignore/Result6.xlsx')
 for w in county_list:
     NarrowingDown(int(w.get('COMM_CLS')),str(w.get('KEYWD')))
 workbook.close()       
