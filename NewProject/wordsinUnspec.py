@@ -9,7 +9,7 @@ import time
 import xlsxwriter
 start2=time.time()
 
-book = open_workbook('../NewProject/NormalizedUNSPSC.xlsx')
+book = open_workbook('../ignore/UNSPSC English v220601 project.xlsx')
 #book = open_workbook('../ignore/Unspec List2b.xlsx')
 '''To work on the UNSPSC sheet you need to change the values of 0 to 12 and 1 to
 16 in order to make the it work.'''
@@ -63,7 +63,7 @@ for entry in dict_list:
 
 
 print(f'Taking family and under in {time.time() - start2}')
-
+stop_words = set(stopwords.words('english'))
 file_docs = []
 tokens=[]
 
@@ -72,6 +72,7 @@ for input in listOfEntry:
         token = sent_tokenize(j)
         for a in token:
             tokens = word_tokenize(a)
+            tokens = [w for w in tokens if not w in stop_words]
     file_docs.append(tokens)
 
 print(f'Tokenize done in {time.time() - start2}')

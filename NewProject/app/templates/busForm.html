@@ -1,0 +1,17 @@
+<div>
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('BusinessCheck') }}">Check</a>
+</div>
+
+{% block content %}
+  <h1>Check</h1>
+  <form action="BusinessCheck" method="post" novalidate>
+      {{form.hidden_tag()}}
+      <p>
+        {{form.businessName.label}}
+        {{form.businessName(size=32)}}
+
+      </p>
+      <p>{{form.submit()}}</p>
+  </form>
+{% endblock %}

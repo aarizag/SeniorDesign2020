@@ -1,0 +1,19 @@
+<html>
+    <head>
+        {% if title %}
+        <title>{{ title }}</title>
+        {% else %}
+        <title>Welcome Daniel</title>
+        {% endif %}
+    </head>
+    <body>
+        <div>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('BusinessCheck') }}">Check</a>
+        </div>
+        <h1>Welcome to the look up table</h1>
+        <h1>For the County of Los Angeles</h1>
+        <body>
+          <p>This will be the loction of a table. If not a table than it will contain somthing</p>
+        </body>
+</html>
