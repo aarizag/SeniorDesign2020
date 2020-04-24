@@ -86,7 +86,6 @@ To get the total amount of corpus positions which is the number
 of processed words.
 """
 dictionary = gensim.corpora.Dictionary(file_docs)
-print(len(dictionary))
 
 print(f'Dictionary done in {time.time() - start2}')
 """

@@ -36,13 +36,17 @@ def euclidean_distance(u, v):
 ## Load Google's Pre-Trained Dataset
 ##
 
+def printList(lists):
+    for current_list in lists:
+        print(current_list)
+
 import gensim.models.word2vec as word2vec
 
 from gensim.models import KeyedVectors
 
 # Google's Pre-Trained Data Set
 from gensim.models import KeyedVectors
-file_directory = '../Google_PreTrain_Dataset/slim/GoogleNews-vectors-negative300-SLIM.bin.gz'
+file_directory = '../ignore/GoogleNews-vectors-negative300.bin.gz'
 # Googles Pre-trained data set has 300 futures
 model = KeyedVectors.load_word2vec_format(file_directory, binary=True)
 
@@ -140,15 +144,24 @@ def compareResults(sentence_1_normalized, sentence_2_normailzed):
     
     return results__final_NoScore
 
-
+import wordNet
+def percentage_similarity(eCOMM_line_, unspsc_):
+    list_t = []
+    for i in range( len(unspsc_)):
+        #print(unspsc.iloc[i])
+        current_result = compareResults(eCOMM_line_, unspsc_.iloc[i]) # compare a ecomm line to the current line from UNSPSC
+        newlist = [unspsc_.iloc[i], wordNet.average_percentage(current_result)]
+        list_t.append( newlist )
+    return list_t
 
 
 import pandas as pd
-narrowed_down_UNSPSC = pd.read_excel("Result6.xlsx").iloc[:,0]
+narrowed_down_UNSPSC = pd.read_excel("Result6.xlsx",sheet_name='475').iloc[:,0]
 print("Done loading Narrowed-down list!")
 #narrowed_down_UNSPSC
+string = "APPAREL OPERATING EXAMINING DISPOSABLE GOWNS MASKS"
 
-newOutput = percentage_similarity(string, narrowed_down_UNSPSC)
+newOutput = percentage_similarity(string.lower(), narrowed_down_UNSPSC)
 descending_order(newOutput)
 printList(newOutput)
 
