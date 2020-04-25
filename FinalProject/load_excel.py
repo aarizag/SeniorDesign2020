@@ -4,7 +4,7 @@ import xlrd
 import random
 
 UNSPSC_LOC = "../ignore/UNSPSC English v220601 project.xlsx"
-UNSPSC_SLIM_LOC = "../ignore/UNSPSC_randSample.xls"
+UNSPSC_SLIM_LOC = "../ignore/narrowedSheets.xlsx"
 COMM_LOC = "../ignore/eCAPS_COMM_11072019.xlsx"
 
 
@@ -56,7 +56,9 @@ class ExcelFile:
         for i in range(self.start_row, sheet.nrows):
             rows.append(self.get_row(row_num=i))
         return rows
-
+    def get_all_sheet_names(self) -> List[str]:
+        self.wb = xlrd.open_workbook(self.loc)
+        return self.wb.sheet_names()
 
 UNSPSC = ExcelFile(UNSPSC_LOC, start_row=1)
 UNSPSC_SLIM = ExcelFile(UNSPSC_SLIM_LOC)

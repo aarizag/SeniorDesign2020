@@ -1,7 +1,4 @@
 
-
-
-
 def descending_order(array):
     counter = 0
     for i in range( len(array) ):
@@ -43,10 +40,11 @@ def printList(lists):
 import gensim.models.word2vec as word2vec
 
 from gensim.models import KeyedVectors
+import Normalize as loaded
 
 # Google's Pre-Trained Data Set
 from gensim.models import KeyedVectors
-file_directory = '../ignore/GoogleNews-vectors-negative300.bin.gz'
+file_directory = '../ignore/GoogleNews-vectors-negative300-SLIM.bin.gz'
 # Googles Pre-trained data set has 300 futures
 model = KeyedVectors.load_word2vec_format(file_directory, binary=True)
 
@@ -156,14 +154,13 @@ def percentage_similarity(eCOMM_line_, unspsc_):
 
 
 import pandas as pd
-narrowed_down_UNSPSC = pd.read_excel("Result6.xlsx",sheet_name='475').iloc[:,0]
-print("Done loading Narrowed-down list!")
+#narrowed_down_UNSPSC = pd.read_excel("Result6.xlsx",sheet_name='475').iloc[:,0]
+#print("Done loading Narrowed-down list!")
 #narrowed_down_UNSPSC
-string = "APPAREL OPERATING EXAMINING DISPOSABLE GOWNS MASKS"
+#string = "DISPOSABLE GOWNS MASKS"
 
-newOutput = percentage_similarity(string.lower(), narrowed_down_UNSPSC)
-descending_order(newOutput)
-printList(newOutput)
+#newOutput = percentage_similarity(string.lower(), narrowed_down_UNSPSC)
+
 
 
 

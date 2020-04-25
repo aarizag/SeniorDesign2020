@@ -1,16 +1,20 @@
+import Normalize
+import wordsinUnspec
 from load_excel import COMM, UNSPSC_SLIM, UNSPSC, ExcelFile
 import time
 import compare_sentences as cs
 
 
-def compare_excels(excel1: ExcelFile, excel2: ExcelFile, col_name1: str, col_name2: str, save_num=10):
+def compare_excels(excel1: ExcelFile, excel2: ExcelFile, col_name1: str, col_name2: str, sheet_name:str):
     """
     Get the defined column from a random row from the first Excel File (the base comparator).
         Then iterate through the rows in the second excel files and compare the base comparator
         to the designated column
     :return: None
     """
-
+    sheetnames = excel1.sheet_names()
+    
+    sheet = excel1
     base_row = excel1.get_row()
     base = base_row[col_name1]
     top_sim = []
@@ -29,11 +33,12 @@ def compare_excels(excel1: ExcelFile, excel2: ExcelFile, col_name1: str, col_nam
 
 
 if __name__ == "__main__":
-    U_COLUMN_NAME = "Class Title"
-    COMM_COL_NAME = "COMM_DSCR_UP"
+    U_COLUMN_NAME = "Commodity Title"
+    COMM_COL_NAME = "KEYWD"
+    SHEET_NAME = "COMM_CLS"
 
     start = time.time()
-    base_row, top_sim = compare_excels(UNSPSC_SLIM, COMM, U_COLUMN_NAME, COMM_COL_NAME)
+    base_row, top_sim = compare_excels(UNSPSC_SLIM, COMM, U_COLUMN_NAME, COMM_COL_NAME,SHEET_NAME)
     print(f'Total time: {time.time()-start}')
     print(base_row)
     print("Class Title:", base_row[U_COLUMN_NAME])

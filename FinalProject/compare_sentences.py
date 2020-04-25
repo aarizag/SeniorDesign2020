@@ -2,13 +2,14 @@ from gensim.models import KeyedVectors
 
 from typing import Dict
 import time
+import DeepCompare as compare
 
 
 FULL_GOOGLE = '/Users/z12dr/Desktop/Python/ignore/GoogleNews-vectors-negative300.bin.gz'
 SLIM_GOOGLE = '/Users/z12dr/Desktop/Python/ignore/GoogleNews-vectors-negative300-SLIM.bin.gz'
 
 start = time.time()
-similarity_model = KeyedVectors.load_word2vec_format(SLIM_GOOGLE, binary=True)
+similarity_model = KeyedVectors.load_word2vec_format(FULL_GOOGLE, binary=True)
 print(f'Model loaded in {time.time() - start}')
 
 
@@ -55,14 +56,14 @@ def shallow_compare(base: str, comparer: str) -> float:
     return sum([word_val(word, base_similar_set) for word in comp_words]) / len(comp_words)
 
 
-def deep_compare(base: str, comparer: str) -> float:
+def deep_compare(base: str, comparer: [str]) -> [float]:
     """
     Do a comparison by comparing each word in the base to every other word in the comparer sentence and taking an
         average of that total
     :param base: The base sentence being compared to
     :param comparer: The sentence being compared to the base
     :return: a float value representing the similarity between the 2 sentences
-    """
+    
     base_words = base.split(' ')
     compared_words = comparer.split(' ')
 
@@ -74,4 +75,6 @@ def deep_compare(base: str, comparer: str) -> float:
         total_sums += max([similarity_model.similarity(b_word, c_word) if c_word in similarity_model.vocab else 0
                            for c_word in compared_words])
 
-    return total_sums / len(base_words)
+"""
+    return compare.percentage_similarity(base,comparer)
+

@@ -9,20 +9,21 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import gensim.models as gm
 
+
 print("Opening model...")
-model = gm.KeyedVectors.load_word2vec_format('../ignore/GoogleNews-vectors-negative300.bin.gz', binary = True)
+model = gm.KeyedVectors.load_word2vec_format('../ignore/GoogleNews-vectors-negative300-SLIM.bin.gz', binary = True)
 print("Model opened.")
 
 def normalizeECOMM():
 	print("Checking if NormalizedEcomm.xlsx exists...")
 
-	if os.path.isfile('NormalizedEcomm.xlsx'):
+	if os.path.isfile('../ignore/NormalizedEcomm.xlsx'):
 		print("File already exists.")
 
 	else:
 		print("File does not exist.")
 		print("Creating workbook...")
-		workbook = xlsxwriter.Workbook('NormalizedEcomm.xlsx')
+		workbook = xlsxwriter.Workbook('../ignore/NormalizedEcomm.xlsx')
 		worksheet = workbook.add_worksheet('COMM_CLS')
 		worksheet2 = workbook.add_worksheet('COMM_ITM')
 		print("Workbook created under NormalizedEcomm.xlsx")
@@ -36,6 +37,7 @@ def normalizeECOMM():
 
 		rows = sheet.nrows
 		cols = sheet.ncols
+
 		rows2 = sheet2.nrows
 		cols2 = sheet2.ncols
 
@@ -65,13 +67,13 @@ def normalizeUNSPSC():
 
 	print("Checking if NormalizedUNSPSC.xlsx exists...")
 
-	if os.path.isfile('NormalizedUNSPSC.xlsx'):
+	if os.path.isfile('../ignore/NormalizedUNSPSC.xlsx'):
 		print("File already exists.")
 
 	else:
 		print("File does not exist.")
 		print("Creating workbook...")
-		workbook = xlsxwriter.Workbook('NormalizedUNSPSC.xlsx')
+		workbook = xlsxwriter.Workbook('../ignore/NormalizedUNSPSC.xlsx')
 		worksheet = workbook.add_worksheet()
 		print("Workbook created under NormalizedUNSPSC.xlsx")
 
@@ -89,15 +91,15 @@ def normalizeUNSPSC():
 		bold = workbook.add_format({'bold': True})
 
 
-		for i in range(cols):
-			worksheet.write(0, i, sheet.cell_value(0, i), bold)
+		for i in range(1,cols):
+			worksheet.write(0, i-1, sheet.cell_value(0, i), bold)
 
 		bar = progressbar.ProgressBar(maxval=rows, \
 	    widgets=[progressbar.Bar('=', '[', ']'), ' ', progressbar.Percentage()])
 		bar.start()
 
 		for row in range(1, rows):
-			for col in range(1, cols - 2):
+			for col in range(0, cols - 2):
 				if row < 5:
 					continue
 				else:
@@ -133,7 +135,6 @@ def remove(sent):
 	stop_words = set(stopwords.words('english'))
 	word_tokens = word_tokenize(phrase)
 	filtered_sentence = [w for w in word_tokens if not w in stop_words]
-	filtered_sentence = []
 
 	for w in word_tokens:
 		if w not in stop_words:
