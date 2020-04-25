@@ -3,9 +3,9 @@ from typing import Optional, Any, List, Dict
 import xlrd
 import random
 
-UNSPSC_LOC = "../ignore/UNSPSC English v220601 project.xlsx"
+UNSPSC_LOC = "../ignore/NormalizedUNSPSC.xlsx"
 UNSPSC_SLIM_LOC = "../ignore/narrowedSheets.xlsx"
-COMM_LOC = "../ignore/eCAPS_COMM_11072019.xlsx"
+COMM_LOC = "../ignore/NormalizedEcomm.xlsx"
 
 
 class ExcelFile:

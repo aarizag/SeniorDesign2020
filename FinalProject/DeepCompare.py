@@ -154,14 +154,14 @@ def percentage_similarity(eCOMM_line_, unspsc_):
 
 
 import pandas as pd
-#narrowed_down_UNSPSC = pd.read_excel("Result6.xlsx",sheet_name='475').iloc[:,0]
+narrowed_down_UNSPSC = pd.read_excel("../ignore/Result6.xlsx",sheet_name='475').iloc[:,0]
 #print("Done loading Narrowed-down list!")
 #narrowed_down_UNSPSC
-#string = "DISPOSABLE GOWNS MASKS"
+string = "DISPOSABLE GOWNS MASKS"
 
-#newOutput = percentage_similarity(string.lower(), narrowed_down_UNSPSC)
-
-
+newOutput = percentage_similarity(string.lower(), narrowed_down_UNSPSC)
+descending_order(newOutput)
+printList(newOutput)
 
 
 
