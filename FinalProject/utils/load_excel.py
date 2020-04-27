@@ -4,7 +4,7 @@ import xlrd
 import random
 
 UNSPSC_LOC = "../../sample_text/UNSPSC English v220601 project.xlsx"
-UNSPSC_SLIM_LOC = "../../sample_text/UNSPSC-slim.xlsx"
+UNSPSC_SLIM_LOC = "../../sample_text/UNSPSC-slim.xls"
 COMM_LOC = "../../sample_text/eCAPS_COMM_11072019.xlsx"
 
 

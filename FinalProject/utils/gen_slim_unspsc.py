@@ -28,7 +28,7 @@ def group_by(column_name="Family Title"):
     return groups
 
 
-def write_from_group(groups, n=2, output='randSample.xls'):
+def write_from_group(groups, n=2, output='UNSPSC-slim.xls'):
     workbook = xlwt.Workbook()
     sheet = workbook.add_sheet('Main')
     for index, value in enumerate(FIELDS):
