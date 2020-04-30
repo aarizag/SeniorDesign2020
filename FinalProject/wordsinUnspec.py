@@ -120,7 +120,7 @@ else:
                 for a in listnew:
                     if(a[0]==''):
                         continue
-                    elif(a[1]>0.05):
+                    elif(a[1]>0.025):
                         listNew.append(a[0])
                 excelSheet=workbook.add_worksheet(str(sheet))
                 excelSheet.write(0,0,"Commodity Title")
@@ -135,7 +135,6 @@ else:
                             cot += 1
                             counter += 1
                 
-                print(f'Done zipping and now filtering  {time.time() - start2}')
 
 
             workbook = xlsxwriter.Workbook('../ignore/narrowedSheets.xlsx')
