@@ -1,12 +1,10 @@
 
-ignore
-UnSpec Family
-Corpus
-Dictionary
-
+# IDE
 .DS_Store
 .idea
+.vscode
 venv
 __pycache__/
 
-/dictionaries/
+# Models
+/models/GoogleNews-vectors-negative300-SLIM.bin.gz
