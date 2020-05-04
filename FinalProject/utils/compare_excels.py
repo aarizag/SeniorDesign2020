@@ -1,6 +1,6 @@
-from load_excel import COMM, UNSPSC_SLIM, ExcelFile
+from utils.load_excel import COMM, UNSPSC_SLIM, ExcelFile
 import time
-from utils import compare_sentences as cs
+import utils.compare_sentences as cs
 
 from typing import Dict, Any
 
@@ -39,6 +39,8 @@ def compare_from_cell(base: str, other_excel: ExcelFile, other_col: str, save_nu
     top_sim = []
 
     for row in other_excel.get_all_rows():
+        print("compare_from_cell")
+        print(row[other_col])
         similarity = cs.deep_compare(base, row[other_col])
         if len(top_sim) <= save_num or similarity > top_sim[0][0]:
             top_sim.append((similarity, row[other_col], row))

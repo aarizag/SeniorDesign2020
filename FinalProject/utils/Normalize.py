@@ -11,7 +11,7 @@ import gensim.models as gm
 
 
 print("Opening model...")
-model = gm.KeyedVectors.load_word2vec_format('../ignore/GoogleNews-vectors-negative300-SLIM.bin.gz', binary = True)
+model = gm.KeyedVectors.load_word2vec_format("../models/GoogleNews-vectors-negative300-SLIM.bin.gz", binary = True)
 print("Model opened.")
 
 def normalizeECOMM():
@@ -29,7 +29,7 @@ def normalizeECOMM():
 		print("Workbook created under NormalizedEcomm.xlsx")
 
 		print("Opening Ecomm...")
-		loc = "../ignore/eCAPS_COMM_11072019.xlsx"
+		loc = "../sample_text/eCAPS_COMM_11072019.xlsx"
 		wb = xlrd.open_workbook(loc)
 		sheet = wb.sheet_by_index(1)
 		sheet2 = wb.sheet_by_index(2)
@@ -51,7 +51,7 @@ def normalizeECOMM():
 				if type(sheet.cell_value(row, col)) == float:
 					worksheet.write(row, col, remove(sheet.cell_value(row, col)))
 				else:
-					worksheet.write(row, col, remove(sheet.cell_value(row, col)).upper())
+					worksheet.write(row, col, remove(sheet.cell_value(row, col)).lower())
 
 		for row in range(rows2):
 			for col in range(cols2):
@@ -59,7 +59,7 @@ def normalizeECOMM():
 				if type(sheet2.cell_value(row, col)) == float:
 					worksheet2.write(row, col, remove(sheet2.cell_value(row, col)))
 				else:
-					worksheet2.write(row, col, remove(sheet2.cell_value(row, col)).upper())
+					worksheet2.write(row, col, remove(sheet2.cell_value(row, col)).lower())
 		bar.finish()
 		workbook.close()
 
@@ -78,7 +78,7 @@ def normalizeUNSPSC():
 		print("Workbook created under NormalizedUNSPSC.xlsx")
 
 		print("Opening UNSPSC...")
-		loc = "../ignore/UNSPSC English v220601 project.xlsx"
+		loc = "../sample_text/UNSPSC English v220601 project.xlsx"
 		wb = xlrd.open_workbook(loc)
 		sheet = wb.sheet_by_index(0)
 		print("Opened.")

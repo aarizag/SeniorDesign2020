@@ -1,3 +1,5 @@
+ignore
+models
 
 # IDE
 .DS_Store
@@ -8,3 +10,4 @@ __pycache__/
 
 # Models
 /models/GoogleNews-vectors-negative300-SLIM.bin.gz
+/models/GoogleNews-vectors-negative300.bin.gz

@@ -41,7 +41,7 @@ def results(list_of_lists):
 
 # Find average percentage
 
-def average_percentage(list_of_list):
+def average(list_of_list):
     lists3 = results(list_of_list)
     l = len(list_of_list)
     percent = 0

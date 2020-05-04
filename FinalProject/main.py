@@ -1,13 +1,12 @@
 import xlwt
 from itertools import chain
 from os import path
-
 from utils.load_excel import COMM, UNSPSC, UNSPSC_SLIM, UNSPSC_SLIM_LOC
 from utils.compare_excels import compare_from_row
 
 EXTENSION_LOC = '../sample_text/'
 BASE_COL = 'Class Title'
-E_COMM_COL = 'COMM_DSCR_UP'
+E_COMM_COL = 'comm_dscr_up'
 
 
 def assign_best_to_rows():

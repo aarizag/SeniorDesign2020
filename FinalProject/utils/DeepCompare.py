@@ -1,24 +1,25 @@
+import utils.similarityPercentage as SimilarityPercentage
+import math
+import gensim.models.word2vec as word2vec
+from gensim.models import KeyedVectors
+from nltk.tokenize import word_tokenize as tokenize_sentence
+import pandas as pd
 
-def descending_order(array):
-    counter = 0
-    for i in range( len(array) ):
-        index_of_smallest = 0
-        for j in range( len(array) - counter ):
-            if(array[j][1] < array[index_of_smallest][1]):
-                index_of_smallest = j
-                
-        temp = array[index_of_smallest]
-        array[index_of_smallest] = array[len(array) - counter - 1]
-        array[len(array) - counter - 1] = temp
-        counter +=1
-        
-## as of now its time complexity is O(n^2)
-## I will implement a better one later, this was just a quick implementation for testing purposes
+
+
+
+## Sorts final results in Descending Order
+## Import descendingOrder.py script
+##      - SelectionSort(unsortedList)
+##      - mergeSort(unsortedList)
+print("\n_____________________________________________")
+#print("Loading... descendingOrder.py Script")
+#import descendingOrder as sort
+#print("Successfully loaded: descendingOrder.py")
 
 ## Euclidean Distance
 #  - distance between two vectors
-import math
-def euclidean_distance(u, v):
+def euclideanDistance(u, v):
     summation = 0
     for i in range(len(u)):
         # (u1 - v1)^ 2
@@ -29,32 +30,29 @@ def euclidean_distance(u, v):
 # Example       
 #print(euclidean_distance([1,2,3], [4,5,6]))
 
-
-## Load Google's Pre-Trained Dataset
-##
-
+## Print List in a column format
 def printList(lists):
     for current_list in lists:
         print(current_list)
 
-import gensim.models.word2vec as word2vec
+####################################
+## Load Google's Pre-trained Dataset
 
-from gensim.models import KeyedVectors
-import Normalize as loaded
 
 # Google's Pre-Trained Data Set
-from gensim.models import KeyedVectors
-file_directory = '../ignore/GoogleNews-vectors-negative300.bin.gz'
-# Googles Pre-trained data set has 300 futures
-model = KeyedVectors.load_word2vec_format(file_directory, binary=True)
+file_directory = '../models/'
+file_name = 'GoogleNews-vectors-negative300.bin.gz'
+print("\nLoading... " + file_name)
 
+# Googles Pre-trained data set has 300 futures (300 neural network neurons)
+model = KeyedVectors.load_word2vec_format(file_directory + file_name, binary=True)
+print("Load successfully: Google's Pre-trained Word2Vec model\n")
 
 ## Word embedding
 ##
 # Using Google's pre-train dataset, convert every word in the tokenized sentence into its 
 # position coordinates in a 300 dimension vector space
-
-def word_embedding(tokenized_sentence):
+def wordEmbedding(tokenized_sentence):
     list_wordembedding = []
     for token in tokenized_sentence:
         try:
@@ -66,35 +64,39 @@ def word_embedding(tokenized_sentence):
             list_wordembedding.append(model["company"]) 
         
     return list_wordembedding
-        
 # word_embedding() takes in a tokenized sentence 
 # this function will return a list of list containing
 # the vector position of every word in a sentece
 
-#parameter = two normalized sentences
-def list_vectorPosition(tokenized_sentence1, tokenized_sentence2):
+
+# parameter = two normalized sentences
+def listVectorPositions(tokenized_sentence1, tokenized_sentence2):
     # list at index 0 = sentence 1
     # list at index 1 = sentence 2
-    list1 = []
+    temp = []
     # the vector position of every word in a sentece
-    sentence1_vector_position = word_embedding(tokenized_sentence1) # vector position for every word in sentence 1
-    sentence2_vector_position = word_embedding(tokenized_sentence2) # vector position for every word in sentence 1
-    list1.append(sentence1_vector_position)
-    list1.append(sentence2_vector_position)
-    return list1
-
+    sentence1_vector_positions = wordEmbedding(tokenized_sentence1) # vector position for every word in sentence 1
+    sentence2_vector_positions = wordEmbedding(tokenized_sentence2) # vector position for every word in sentence 1
+    
+    temp.append(sentence1_vector_positions)
+    temp.append(sentence2_vector_positions)
+    return temp
 #list_vectorPosition returns a (list) containing a (list) of (list with 300 values).
 #list_vectorPosition[0] vector positions for sentence 1
 #list_vectorPosition[1] vector positions for sentence 2
 #list_vectorPosition[0][i] returns a list with vector position (300 entries) of word at i
 
-def compare(tokenized_sentence1, tokenized_sentence2, list_of_vector_position):
+
+## Creating Pairs: This function will determine what words from one standard 
+##                 will be comapared to what words from the other standard
+def createPairs(tokenized_sentence1, tokenized_sentence2, list_of_vector_position):
     # index 0 = sentence 1
     # index 1 = sentence 2
     compareFrom = tokenized_sentence1
     compareTo = tokenized_sentence2
     compareFrom_vector = 0 #list_of_vector_position[0]
     compareTo_vector = 1 #list_of_vector_position[1]
+    
     if (len(tokenized_sentence1) < len(tokenized_sentence2)):
         compareFrom = tokenized_sentence2
         compareTo = tokenized_sentence1
@@ -102,13 +104,13 @@ def compare(tokenized_sentence1, tokenized_sentence2, list_of_vector_position):
         compareTo_vector = 0 # list_of_vector_position[0]
     
     index_of_most_similar = 0 # j
-    distance_of_most_similar = 10000
+    distance_of_most_similar = 1000000 ## we chose a random big number, can also use the max value an int can hold
     
     results = []
-    
+
     for i in range( len(list_of_vector_position[compareFrom_vector]) ):
         for j in range( len(list_of_vector_position[compareTo_vector]) ):
-            current_distance = euclidean_distance(list_of_vector_position[compareFrom_vector][i], list_of_vector_position[compareTo_vector][j])
+            current_distance = euclideanDistance(list_of_vector_position[compareFrom_vector][i], list_of_vector_position[compareTo_vector][j])
             
             if(distance_of_most_similar > current_distance):
                 index_of_most_similar = j
@@ -116,49 +118,86 @@ def compare(tokenized_sentence1, tokenized_sentence2, list_of_vector_position):
                 
         results.append( [compareFrom[i], compareTo[index_of_most_similar], distance_of_most_similar] )
         index_of_most_similar = 0
-        distance_of_most_similar = 10000
+        distance_of_most_similar = 1000000
         
     return results
 
 
-def removeDistanceScore(list_results):
-    newList = []
-    for list in list_results:
-        newList.append(list[:-1])
-    return newList
-
-
-from nltk.tokenize import word_tokenize as tokenize_sentence
-def compareResults(sentence_1_normalized, sentence_2_normailzed):
+## I made this function so that it can be easier comparing. this function will tokenized both sentence, find 
+## its vector positions for each word, and compare to see what pair of words will be compared to eachother
+## All we have to enter as a Parameter is two normalized standards, the function will do the rest
+def startPairingWords(sentence_1_normalized, sentence_2_normailzed):
     # tokenize normalized sentences
     s1_t = tokenize_sentence(sentence_1_normalized) # tokenize sentence 1
     s2_t = tokenize_sentence(sentence_2_normailzed) # tokenize sentence 2
 
-    list1_final = list_vectorPosition(s1_t, s2_t) # list with vector positions of every word in both sentences
+    list_VP = listVectorPositions(s1_t, s2_t) # list with vector positions of every word in both sentences
     
-    results_Final = compare(s1_t, s2_t, list1_final) # return list with nearest neighbors and distance score
+    pairs = createPairs(s1_t, s2_t, list_VP) # return list with nearest neighbors and distance score
     
-    results__final_NoScore = removeDistanceScore(results_Final) # remove score list from results
-    
-    return results__final_NoScore
+    return pairs
 
-import wordNet
-def percentage_similarity(eCOMM_line_, unspsc_):
-    list_t = []
+
+## import script similarityPercentage.py
+## Calculate Percentage Similarity from list of paired words
+## To Start calculating we must first import our similarityPercentage.py python file
+
+# import similarityPercentage.py script, it will find similarity percentage
+#print('Loading... similarityPercentage.py')
+#print('Load Successfully: similarityPercentage.py')
+#print("_____________________________________________")
+#print("MAIN FUNCTION: comparisons() ")
+
+
+
+###################################################
+###################################################
+####### This is the MAIN FUNCTION #################
+###################################################
+###################################################
+## This is the main function to compare and calculate similarity percentage
+
+#For single two single sentences to compare and return the float of how similar
+def comparisons(eCOMM_line_, unspsc_):
+    results = []
+    ListofPairs = startPairingWords(eCOMM_line_, unspsc_) # compare a ecomm line to the current line from UNSPSC
+    return SimilarityPercentage.average(ListofPairs)
+   
+#print("_____________________________________________\n")
+
+#Used with the wordinUnspsc
+def comparisons2(eCOMM_line_, unspsc_):
+    results = []
     for i in range( len(unspsc_)):
-        #print(unspsc.iloc[i])
-        current_result = compareResults(eCOMM_line_, unspsc_.iloc[i]) # compare a ecomm line to the current line from UNSPSC
-        newlist = [unspsc_.iloc[i], wordNet.average_percentage(current_result)]
-        list_t.append( newlist )
-    return list_t
+        ListofPairs = startPairingWords(eCOMM_line_, unspsc_.iloc[i]) # compare a ecomm line to the current line from UNSPSC
+        tempList = [unspsc_.iloc[i], SimilarityPercentage.average(ListofPairs)]
+        results.append( tempList )
+    return results 
 
 
-import pandas as pd
-narrowed_down_UNSPSC = pd.read_excel("../ignore/narrowedsheets.xlsx",sheet_name='475').iloc[:,0]
+## New one ############################
+
+#narrowed_down_UNSPSC = pd.read_excel("../ignore/Result6.xlsx",sheet_name='475').iloc[:,0]
 #print("Done loading Narrowed-down list!")
 #narrowed_down_UNSPSC
-string = "APPAREL OPERATING EXAMINING DISPOSABLE CAPES CAPS EXAMINATION PAPER GOWNS MASKS ETC"
+#string = "DISPOSABLE GOWNS MASKS"
+#string2 = "masks plate hair grow"
 
-newOutput = percentage_similarity(string.lower(), narrowed_down_UNSPSC)
-descending_order(newOutput)
-printList(newOutput)
+#newOutput = comparisons(string.lower(), string2)
+#print(newOutput)
+#sort.mergeSort(newOutput)
+#printList(newOutput)
+
+## Old one ##############################
+
+#narrowed_down_UNSPSC = pd.read_excel("../ignore/Result6.xlsx",sheet_name='475').iloc[:,0]
+#print("Done loading Narrowed-down list!")
+#narrowed_down_UNSPSC
+#string = "DISPOSABLE GOWNS MASKS"
+
+#newOutput = percentage_similarity(string.lower(), narrowed_down_UNSPSC)
+#descending_order(newOutput)
+#printList(newOutput)
+
+#########################################
+#print("_____________________________________________")

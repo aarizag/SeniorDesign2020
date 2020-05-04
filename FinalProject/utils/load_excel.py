@@ -1,12 +1,13 @@
 from typing import Optional, Any, List, Dict
-
+import utils.Normalize
 import xlrd
 import random
 
-UNSPSC_LOC = "../../sample_text/UNSPSC English v220601 project.xlsx"
-UNSPSC_SLIM_LOC = "../../sample_text/UNSPSC-slim.xls"
-COMM_LOC = "../../sample_text/eCAPS_COMM_11072019.xlsx"
+UNSPSC_LOC = "../ignore/NormalizedUNSPSC.xlsx"
+UNSPSC_SLIM_LOC = "../sample_text/UNSPSC-slim.xls"
+COMM_LOC = "../ignore/NormalizedEcomm.xlsx"
 
+Narrowed="../ignore/narrowedSheets.xlsx"
 
 class ExcelFile:
     def __init__(self, loc, wb=None, sheet_no=0, start_row=0, fields=None):
@@ -62,4 +63,6 @@ class ExcelFile:
 
 UNSPSC = ExcelFile(UNSPSC_LOC, start_row=1)
 UNSPSC_SLIM = ExcelFile(UNSPSC_SLIM_LOC)
-COMM = ExcelFile(COMM_LOC, sheet_no=2)
+COMM = ExcelFile(COMM_LOC, sheet_no=1)
+
+COMM_NARROW = ExcelFile(Narrowed)
