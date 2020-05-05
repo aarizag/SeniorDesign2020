@@ -159,9 +159,12 @@ def startPairingWords(sentence_1_normalized, sentence_2_normailzed):
 
 #For single two single sentences to compare and return the float of how similar
 def comparisons(eCOMM_line_, unspsc_):
-    results = []
-    ListofPairs = startPairingWords(eCOMM_line_, unspsc_) # compare a ecomm line to the current line from UNSPSC
-    return SimilarityPercentage.average(ListofPairs)
+    if(eCOMM_line_ == "" or unspsc_ == ""):
+        return 0
+    else:
+        results = []
+        ListofPairs = startPairingWords(eCOMM_line_, unspsc_) # compare a ecomm line to the current line from UNSPSC
+        return SimilarityPercentage.average(ListofPairs)
    
 #print("_____________________________________________\n")
 
@@ -181,7 +184,7 @@ def comparisons2(eCOMM_line_, unspsc_):
 #print("Done loading Narrowed-down list!")
 #narrowed_down_UNSPSC
 #string = "DISPOSABLE GOWNS MASKS"
-#string2 = "masks plate hair grow"
+#string2 = ["masks plate hair grow","hair grow gowns"]
 
 #newOutput = comparisons(string.lower(), string2)
 #print(newOutput)

@@ -1,4 +1,4 @@
-import utils.wordsinUnspec
+#import utils.wordsinUnspec
 from utils.load_excel import COMM_NARROW
 import xlsxwriter
 from xlrd import open_workbook
@@ -6,9 +6,9 @@ import operator
 import utils.DeepCompare as DC
 import pandas as pd
 
-book = open_workbook('../ignore/NormalizedEcomm.xlsx')
+book = open_workbook('../ignore/eCAPS_COMM_11072019.xlsx')
 county_list = []
-sheet = book.sheet_by_index(1)
+sheet = book.sheet_by_index(2)
 # read header values into the list
 keys = [sheet.cell(0, col_index).value for col_index in range(sheet.ncols)]
 
@@ -25,11 +25,11 @@ def GensheetsCountytoUNSPSC():
         narrowed_down_UNSPSC = pd.read_excel("../ignore/narrowedSheets.xlsx",sheet_name=sheet).iloc[:,0]
         narrowed_commodity = pd.read_excel("../ignore/narrowedSheets.xlsx",sheet_name=sheet).iloc[:,1]
         for i in county_list:
-            if(str(int(i.get("comm_cls")))== sheet):
-                results = DC.comparisons2(i.get("keywd"),narrowed_down_UNSPSC)
-                excelSheet = workbook.add_worksheet(str(i.get("comm_itm")))
-                excelSheet.write(0,0,i.get("comm_cd"))
-                excelSheet.write(0,1,i.get("keywd"))
+            if(str(int(i.get("COMM_CLS")))== sheet):
+                results = DC.comparisons2(i.get("KEYWD").lower(),narrowed_down_UNSPSC)
+                excelSheet = workbook.add_worksheet(str(i.get("COMM_ITM")))
+                excelSheet.write(0,0,i.get("COMM_CD"))
+                excelSheet.write(0,1,i.get("KEYWD"))
                 excelSheet.write(1,0,"Commodity Title")
                 excelSheet.write(1,1,"Commodity")
                 excelSheet.write(1,2,"Similar Percent")

@@ -11,7 +11,7 @@ import xlsxwriter
 
 start2=time.time()
 
-book = open_workbook('../ignore/NormalizedUNSPSC.xlsx')
+book = open_workbook('../ignore/UNSPSC English v220601 project.xlsx')
 #book = open_workbook('../ignore/Unspec List2b.xlsx')
 '''To work on the UNSPSC sheet you need to change the values of 0 to 12 and 1 to
 16 in order to make the it work.'''
@@ -26,11 +26,11 @@ for row_index in range(1, sheet.nrows):
     dict_list.append(d)
 
 
-book = open_workbook('../ignore/NormalizedEcomm.xlsx')
+book = open_workbook('../ignore/eCAPS_COMM_11072019.xlsx')
 #book = open_workbook('../ignore/County_List.xlsx')
 county_list = []
 
-sheet = book.sheet_by_index(0)
+sheet = book.sheet_by_index(1)
 # read header values into the list
 keys = [sheet.cell(0, col_index).value for col_index in range(sheet.ncols)]
 
@@ -75,6 +75,7 @@ for input in listOfEntry:
         for a in token:
             tokens = word_tokenize(a)
             tokens = [w for w in tokens if not w in stop_words]
+            tokens = [word for word in tokens if word.isalnum()]
     file_docs.append(tokens)
 
 print(f'Tokenize done in {time.time() - start2}')
@@ -109,6 +110,8 @@ print(f'Done with building Similarity in {time.time() - start2}')
 
 def NarrowingDown(sheet,county):
     query_doc = word_tokenize(county.lower())
+    query_doc = [w for w in query_doc if not w in stop_words]
+    query_doc = [word for word in query_doc if word.isalnum()]
     query_doc_bow = dictionary.doc2bow(query_doc, True)
     query_doc_tf_idf = tf_idf[query_doc_bow]
     listnew =[]
@@ -139,7 +142,7 @@ def NarrowingDown(sheet,county):
 
 workbook = xlsxwriter.Workbook('../ignore/narrowedSheets.xlsx')
 for w in county_list:
-    NarrowingDown(int(w.get('comm_cls')),str(w.get('keywd')))
+    NarrowingDown(int(w.get('COMM_CLS')),str(w.get('KEYWD')))
 workbook.close()       
 print(f'Narrowing done in {time.time() - start2}')
 
