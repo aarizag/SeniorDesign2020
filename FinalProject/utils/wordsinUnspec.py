@@ -9,9 +9,12 @@ import time
 import xlsxwriter
 
 
+if not os.path.exists('../ignore'):
+    os.makedirs('../ignore')
+
 start2=time.time()
 
-book = open_workbook('../ignore/UNSPSC English v220601 project.xlsx')
+book = open_workbook('../sample_text/NormalizedUNSPSC.xlsx')
 #book = open_workbook('../ignore/Unspec List2b.xlsx')
 '''To work on the UNSPSC sheet you need to change the values of 0 to 12 and 1 to
 16 in order to make the it work.'''
@@ -26,7 +29,7 @@ for row_index in range(1, sheet.nrows):
     dict_list.append(d)
 
 
-book = open_workbook('../ignore/eCAPS_COMM_11072019.xlsx')
+book = open_workbook('../sample_text/NormalizedEcomm.xlsx')
 #book = open_workbook('../ignore/County_List.xlsx')
 county_list = []
 
