@@ -3,11 +3,11 @@ import utils.Normalize
 import xlrd
 import random
 
-UNSPSC_LOC = "../sample_text/UNSPSC English v220601 project.xlsx"
+UNSPSC_LOC = "../sample_text/NormalizedUNSPSC.xlsx"
 UNSPSC_SLIM_LOC = "../sample_text/UNSPSC-slim.xls"
-COMM_LOC = "../sample_text/eCAPS_COMM_11072019.xlsx"
+COMM_LOC = "../sample_text/NormalizedEcomm.xlsx"
 
-Narrowed="../ignore/narrowedSheets.xlsx"
+Narrowed="../sample_text/narrowedSheets.xlsx"
 
 class ExcelFile:
     def __init__(self, loc, wb=None, sheet_no=0, start_row=0, fields=None):

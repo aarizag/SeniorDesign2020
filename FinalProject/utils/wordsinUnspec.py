@@ -7,6 +7,7 @@ from nltk.corpus import stopwords
 import operator
 import time
 import xlsxwriter
+import utils.Normalize
 
 
 if not os.path.exists('../ignore'):
@@ -21,7 +22,7 @@ book = open_workbook('../sample_text/NormalizedUNSPSC.xlsx')
 dict_list = []
 sheet = book.sheet_by_index(0)
 # read header values into the list
-keys = [sheet.cell(0, col_index).value for col_index in range(sheet.ncols)]
+keys = [sheet.cell(12, col_index).value for col_index in range(sheet.ncols)]
 
 for row_index in range(1, sheet.nrows):
     d = {keys[col_index]: sheet.cell(row_index, col_index).value
@@ -33,7 +34,7 @@ book = open_workbook('../sample_text/NormalizedEcomm.xlsx')
 #book = open_workbook('../ignore/County_List.xlsx')
 county_list = []
 
-sheet = book.sheet_by_index(1)
+sheet = book.sheet_by_index(0)
 # read header values into the list
 keys = [sheet.cell(0, col_index).value for col_index in range(sheet.ncols)]
 
@@ -51,15 +52,15 @@ keyvaluePair = []
 counter = 0
 
 for entry in dict_list:
-    a = entry.get("Segment Title")
-    b = entry.get("Segment Definition")
-    c = entry.get("Family Title")
-    d =entry.get("Family Definition")
-    e = entry.get("Class Title")
-    f = entry.get("Class Definition")
-    g = entry.get("Commodity Title")
-    h = entry.get("Commodity Definition")
-    i = entry.get("Commodity")
+    a = entry.get("segment title")
+    b = entry.get("segment definition")
+    c = entry.get("family title")
+    d =entry.get("family definition")
+    e = entry.get("class title")
+    f = entry.get("class definition")
+    g = entry.get("commodity ditle")
+    h = entry.get("commodity definition")
+    i = entry.get("commodity")
     result = str(a)+" "+str(b)+" "+str(c)+" "+str(d)+str(e)+" " + str(f) + " " + str(g)+" "+str(h)
     sen = sent_tokenize(result.lower())
     listOfEntry.append(sen)
@@ -126,24 +127,24 @@ def NarrowingDown(sheet,county):
         elif(a[1]>0.05):
             listNew.append(a[0])
     excelSheet=workbook.add_worksheet(str(sheet))
-    excelSheet.write(0,0,"Commodity Title")
-    excelSheet.write(0,1,"Commodity")
+    excelSheet.write(0,0,"commodity title")
+    excelSheet.write(0,1,"commodity")
     cot = 1
     counter = 0
     for entry in dict_list:
         if(counter < len(listNew)):
-            if(entry.get("Commodity")==listNew[counter]):
-                if(entry.get("Commodity Title")==""):
+            if(entry.get("commodity")==listNew[counter]):
+                if(entry.get("commodity title")==""):
                     excelSheet.write(cot,0,"nothing")
                 else:
-                    excelSheet.write(cot,0,entry.get("Commodity Title"))
-                excelSheet.write(cot,1,entry.get("Commodity"))
+                    excelSheet.write(cot,0,entry.get("commodity title"))
+                excelSheet.write(cot,1,entry.get("commodity"))
                 cot += 1
                 counter += 1
     
 
 
-workbook = xlsxwriter.Workbook('../ignore/narrowedSheets.xlsx')
+workbook = xlsxwriter.Workbook('../sample_text/narrowedSheets.xlsx')
 for w in county_list:
     NarrowingDown(int(w.get('COMM_CLS')),str(w.get('KEYWD')))
 workbook.close()       

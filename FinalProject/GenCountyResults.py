@@ -6,9 +6,9 @@ import operator
 import utils.DeepCompare as DC
 import pandas as pd
 
-book = open_workbook('../ignore/eCAPS_COMM_11072019.xlsx')
+book = open_workbook('../sample_text/NormalizedEcomm.xlsx')
 county_list = []
-sheet = book.sheet_by_index(2)
+sheet = book.sheet_by_index(1)
 # read header values into the list
 keys = [sheet.cell(0, col_index).value for col_index in range(sheet.ncols)]
 
@@ -22,8 +22,8 @@ def GensheetsCountytoUNSPSC():
     sheetNames = COMM_NARROW.get_all_sheet_names()
     for sheet in sheetNames:
         workbook = xlsxwriter.Workbook('../ignore/'+sheet+'.xlsx')
-        narrowed_down_UNSPSC = pd.read_excel("../ignore/narrowedSheets.xlsx",sheet_name=sheet).iloc[:,0]
-        narrowed_commodity = pd.read_excel("../ignore/narrowedSheets.xlsx",sheet_name=sheet).iloc[:,1]
+        narrowed_down_UNSPSC = pd.read_excel("../sample_text/narrowedSheets.xlsx",sheet_name=sheet).iloc[:,0]
+        narrowed_commodity = pd.read_excel("../sample_text/narrowedSheets.xlsx",sheet_name=sheet).iloc[:,1]
         for i in county_list:
             if(str(int(i.get("COMM_CLS")))== sheet):
                 results = DC.comparisons2(i.get("KEYWD").lower(),narrowed_down_UNSPSC)
