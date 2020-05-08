@@ -5,8 +5,8 @@ import time
 from utils.DeepCompare import comparisons
 
 
-FULL_GOOGLE = '/Users/z12dr/Desktop/Python/models/GoogleNews-vectors-negative300.bin.gz'
-SLIM_GOOGLE = '/Users/z12dr/Desktop/Python/models/GoogleNews-vectors-negative300-SLIM.bin.gz'
+FULL_GOOGLE = '../models/GoogleNews-vectors-negative300.bin.gz'
+#SLIM_GOOGLE = '/Users/z12dr/Desktop/Python/models/GoogleNews-vectors-negative300-SLIM.bin.gz'
 
 start = time.time()
 similarity_model = KeyedVectors.load_word2vec_format(FULL_GOOGLE, binary=True)

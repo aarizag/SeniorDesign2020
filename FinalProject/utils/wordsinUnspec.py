@@ -1,4 +1,4 @@
-import nltk,re,pprint
+import nltk
 import os
 from nltk.tokenize import word_tokenize, sent_tokenize
 import gensim

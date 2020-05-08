@@ -61,8 +61,8 @@ class ExcelFile:
         self.wb = xlrd.open_workbook(self.loc)
         return self.wb.sheet_names()
 
-UNSPSC = ExcelFile(UNSPSC_LOC, start_row=1)
+UNSPSC = ExcelFile(UNSPSC_LOC, start_row=12)
 UNSPSC_SLIM = ExcelFile(UNSPSC_SLIM_LOC)
-COMM = ExcelFile(COMM_LOC, sheet_no=2)
+COMM = ExcelFile(COMM_LOC, sheet_no=1)
 
 COMM_NARROW = ExcelFile(Narrowed)

@@ -11,7 +11,7 @@ import gensim.models as gm
 
 
 print("Opening model...")
-model = gm.KeyedVectors.load_word2vec_format("../models/GoogleNews-vectors-negative300-SLIM.bin.gz", binary = True)
+model = gm.KeyedVectors.load_word2vec_format("../models/GoogleNews-vectors-negative300.bin.gz", binary = True)
 print("Model opened.")
 
 

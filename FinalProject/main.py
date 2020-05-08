@@ -5,7 +5,7 @@ from utils.load_excel import COMM, UNSPSC, UNSPSC_SLIM, UNSPSC_SLIM_LOC
 from utils.compare_excels import compare_from_row
 
 EXTENSION_LOC = '../sample_text/'
-BASE_COL = 'Class Title'
+BASE_COL = 'class title'
 E_COMM_COL = 'COMM_DSCR_UP'
 
 
@@ -53,3 +53,4 @@ def write_best_to_file():
 
 if __name__ == '__main__':
     write_best_to_file()
+    print("Done")

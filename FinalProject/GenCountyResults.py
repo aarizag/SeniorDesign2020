@@ -17,11 +17,13 @@ for row_index in range(1, sheet.nrows):
          for col_index in range(sheet.ncols)}
     county_list.append(d)
 
+if not os.path.exists('../County_Sheets'):
+    os.makedirs('../County_Sheets')
 
 def GensheetsCountytoUNSPSC():
     sheetNames = COMM_NARROW.get_all_sheet_names()
     for sheet in sheetNames:
-        workbook = xlsxwriter.Workbook('../ignore/'+sheet+'.xlsx')
+        workbook = xlsxwriter.Workbook('../County_Sheets/'+sheet+'.xlsx')
         narrowed_down_UNSPSC = pd.read_excel("../sample_text/narrowedSheets.xlsx",sheet_name=sheet).iloc[:,0]
         narrowed_commodity = pd.read_excel("../sample_text/narrowedSheets.xlsx",sheet_name=sheet).iloc[:,1]
         for i in county_list:
@@ -48,5 +50,5 @@ def GensheetsCountytoUNSPSC():
                 
         
 GensheetsCountytoUNSPSC()
-    
+print("Done!") 
     

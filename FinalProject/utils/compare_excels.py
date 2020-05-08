@@ -50,7 +50,7 @@ def compare_from_cell(base: str, other_excel: ExcelFile, other_col: str, save_nu
 
 
 if __name__ == "__main__":
-    U_COLUMN_NAME = "Class Title"
+    U_COLUMN_NAME = "class title"
     COMM_COL_NAME = "COMM_DSCR_UP"
 
     start = time.time()
