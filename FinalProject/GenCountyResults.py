@@ -5,6 +5,7 @@ from xlrd import open_workbook
 import operator
 import utils.DeepCompare as DC
 import pandas as pd
+import os
 
 book = open_workbook('../sample_text/NormalizedEcomm.xlsx')
 county_list = []
